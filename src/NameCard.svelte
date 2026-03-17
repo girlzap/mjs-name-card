@@ -326,9 +326,11 @@
     position: absolute;
     inset: 0;
     border-radius: 16px;
-    overflow: hidden;
+    /* overflow: hidden removed — it breaks backface-visibility in Safari
+       when combined with backdrop-filter. Clipping is handled by children. */
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    will-change: transform;
 
     background: linear-gradient(
       135deg,
@@ -351,6 +353,11 @@
       0 0 0 0.5px rgba(255, 255, 255, 0.08) inset,
       0 20px 80px rgba(0, 0, 0, 0.7),
       0 4px 20px rgba(212, 172, 110, 0.12);
+  }
+
+  /* Explicit rotateY(0) forces correct GPU layer on front face in Safari */
+  .card-front {
+    transform: rotateY(0deg);
   }
 
   /* Back face is pre-rotated 180° */
@@ -430,6 +437,8 @@
     justify-content: center;
     gap: clamp(8px, 2%, 18px);
     padding: 10%;
+    border-radius: 16px;
+    overflow: hidden;
   }
 
   .name-block { text-align: center; }
@@ -478,6 +487,8 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    border-radius: 16px;
+    overflow: hidden;
   }
 
   .mag-stripe {
